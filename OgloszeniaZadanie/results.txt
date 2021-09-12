@@ -1,1 +1,1 @@
-[{"SearchPhrase":"Audi A3","NumberOfItems":10,"AveragePrice":14690.0,"AverageMileage":235066.6,"AverageEngineCapacity":1851.3333333333333,"AverageYearOfProduction":2004.2}]
+[{"SearchPhrase":"Opel Astra","NumberOfItems":30,"AveragePrice":15266.666666666666,"AverageMileage":206707.2,"AverageEngineCapacity":1666.75,"AverageYearOfProduction":2008.1333333333334}]

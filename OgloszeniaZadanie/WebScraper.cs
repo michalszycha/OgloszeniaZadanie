@@ -16,19 +16,30 @@ namespace OgloszeniaZadanie
     {
         static string workingDirectory = Environment.CurrentDirectory;
         static string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-        static IWebDriver driver = new ChromeDriver($"{projectDirectory}\\Resources\\");
+        ChromeOptions options;
+        public static IWebDriver driver;
         public DataToSearch dataToSearch;
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+        WebDriverWait wait;
+        bool manyPages;
 
         public List<Vehicle> vehicles = new List<Vehicle>();
 
         public WebScraper()
         {
+            options = new ChromeOptions();
+            options.AddArgument("--silent");
+            driver = new ChromeDriver($"{projectDirectory}\\Resources\\", options);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             dataToSearch = new DataToSearch();
+            manyPages = IsManyPages();
             LoadPage();
             AcceptCookies();
             ChooseVehicle(dataToSearch.brand, dataToSearch.model);
-            GetVehiclesFromAnnouncements(GetAnnouncements());
+            if(!manyPages)
+                GetVehiclesFromAnnouncements(GetAnnouncements());
+            else
+                GetVehiclesFromAnnouncements(GetAnnouncements(dataToSearch.pages));
+            driver.Quit();
         }
 
         private void LoadPage()
@@ -75,10 +86,27 @@ namespace OgloszeniaZadanie
         private IReadOnlyCollection<IWebElement> GetAnnouncements()
         {
             IReadOnlyCollection<IWebElement> announcements;
-            //announcements = driver.FindElements(By.XPath("//*[@class='list__item list--item--wyroznione list--item--withPrice']"));
             announcements = driver.FindElements(By.XPath("//div[contains(@class, 'list--item--withPrice')]"));
 
             return announcements;
+        }
+        private List<IWebElement> GetAnnouncements(int pages)
+        {
+            List<IWebElement> announcementsList = new List<IWebElement>();
+            IReadOnlyCollection<IWebElement> announcements;
+            int actualPage = 1;
+            while (true)
+            {
+                announcements = driver.FindElements(By.XPath("//div[contains(@class, 'list--item--withPrice')]"));
+                foreach (var announcement in announcements)
+                    announcementsList.Add(announcement);
+                actualPage += 1;
+                if (actualPage > pages)
+                    break;
+                NextPage();
+            }
+
+            return announcementsList;
         }
 
         private string GetInfoFromAnnouncement(IWebElement announcement, string info)
@@ -126,6 +154,27 @@ namespace OgloszeniaZadanie
                 Vehicle vehicle = new Vehicle(price, mileage, productionAge, capacity);
                 vehicles.Add(vehicle);
             }
+        }
+
+        private static bool IsManyPages()
+        {
+            bool manyPages;
+            try
+            {
+                driver.FindElements(By.XPath("//*span[@class='pages__item__active')]"));
+                manyPages = true;
+            }
+            catch (NoSuchElementException)
+            {
+                manyPages = false;
+            }
+            return manyPages;
+        }
+
+        private void NextPage()
+        {
+            IWebElement nextPageButton = driver.FindElement(By.XPath("//*div[@class='pages__controls pages__controls--right']/a[@class='pages__controls__next']"));
+            nextPageButton.Click();
         }
     }
 }
