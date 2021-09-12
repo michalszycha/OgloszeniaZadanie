@@ -11,14 +11,14 @@ namespace OgloszeniaZadanie
 
         public string price;
         public string mileage;
-        public string productionAge;
+        public string productionYear;
         public string capacity;
 
-        public Vehicle(string price, string mileage, string productionAge, string capacity)
+        public Vehicle(string price, string mileage, string productionYear, string capacity)
         {
             this.price = price;
             this.mileage = mileage;
-            this.productionAge = productionAge;
+            this.productionYear = productionYear;
             this.capacity = capacity;
         }
     }

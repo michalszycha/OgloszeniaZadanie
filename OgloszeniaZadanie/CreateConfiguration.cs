@@ -13,7 +13,7 @@ namespace OgloszeniaZadanie
 
         static string GetVehicleToSearch()
         {
-            Console.Write("Insert model.\n:");
+            Console.Write("Insert brand and model.\n:");
             string vehicle = Console.ReadLine();
             return vehicle;
         }

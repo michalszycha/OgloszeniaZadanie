@@ -1,0 +1,1 @@
+[{"SearchPhrase":"Audi A3","NumberOfItems":10,"AveragePrice":14690.0,"AverageMileage":235066.6,"AverageEngineCapacity":1851.3333333333333,"AverageYearOfProduction":2004.2}]

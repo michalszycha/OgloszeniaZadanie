@@ -17,7 +17,7 @@ namespace OgloszeniaZadanie
         static string workingDirectory = Environment.CurrentDirectory;
         static string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
         static IWebDriver driver = new ChromeDriver($"{projectDirectory}\\Resources\\");
-        DataToSearch dataToSearch;
+        public DataToSearch dataToSearch;
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
 
         public List<Vehicle> vehicles = new List<Vehicle>();

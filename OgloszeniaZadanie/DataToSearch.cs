@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OgloszeniaZadanie
 {
-    class DataToSearch
+    public class DataToSearch
     {
         public string brand;
         public string model;
@@ -44,9 +44,9 @@ namespace OgloszeniaZadanie
             {
                 pagesFromConfig = ReadConfiguration.ReadPages(configName);
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
-                Console.WriteLine($"There is no config file. Caught {e.Message}.");
+                Console.WriteLine($"There is no config file.");
                 CreateConfiguration.CreateJsonConfig(configName);
                 pagesFromConfig = ReadConfiguration.ReadPages(configName);
             }
