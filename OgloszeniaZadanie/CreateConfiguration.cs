@@ -17,11 +17,11 @@ namespace OgloszeniaZadanie
             string vehicle = Console.ReadLine();
             return vehicle;
         }
-        static int GetPagesToSearch()
+        static string GetPagesToSearch()
         {
             Console.Write("Insert number of pages.\n:");
-            string pagesStr = Console.ReadLine();
-            return int.Parse(pagesStr);
+            string pages = Console.ReadLine();
+            return pages;
         }
         public static void CreateJsonConfig(string configName)
         {

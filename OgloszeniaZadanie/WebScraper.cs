@@ -27,18 +27,18 @@ namespace OgloszeniaZadanie
         public WebScraper()
         {
             options = new ChromeOptions();
-            options.AddArgument("--silent");
+            options.AddArgument("--log-level=3");
             driver = new ChromeDriver($"{projectDirectory}\\Resources\\", options);
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             dataToSearch = new DataToSearch();
-            manyPages = IsManyPages();
             LoadPage();
             AcceptCookies();
             ChooseVehicle(dataToSearch.brand, dataToSearch.model);
-            if(!manyPages)
-                GetVehiclesFromAnnouncements(GetAnnouncements());
+            manyPages = IsManyPages();
+            if (!manyPages)
+                GetVehiclesFromAnnouncements();
             else
-                GetVehiclesFromAnnouncements(GetAnnouncements(dataToSearch.pages));
+                GetVehiclesFromAnnouncements(dataToSearch.pages);
             driver.Quit();
         }
 
@@ -85,28 +85,9 @@ namespace OgloszeniaZadanie
 
         private IReadOnlyCollection<IWebElement> GetAnnouncements()
         {
-            IReadOnlyCollection<IWebElement> announcements;
-            announcements = driver.FindElements(By.XPath("//div[contains(@class, 'list--item--withPrice')]"));
+            IReadOnlyCollection<IWebElement> announcements = driver.FindElements(By.XPath("//div[contains(@class, 'list--item--withPrice')]")).ToList();
 
             return announcements;
-        }
-        private List<IWebElement> GetAnnouncements(int pages)
-        {
-            List<IWebElement> announcementsList = new List<IWebElement>();
-            IReadOnlyCollection<IWebElement> announcements;
-            int actualPage = 1;
-            while (true)
-            {
-                announcements = driver.FindElements(By.XPath("//div[contains(@class, 'list--item--withPrice')]"));
-                foreach (var announcement in announcements)
-                    announcementsList.Add(announcement);
-                actualPage += 1;
-                if (actualPage > pages)
-                    break;
-                NextPage();
-            }
-
-            return announcementsList;
         }
 
         private string GetInfoFromAnnouncement(IWebElement announcement, string info)
@@ -139,10 +120,10 @@ namespace OgloszeniaZadanie
             return infoValue;
         }
 
-        private void GetVehiclesFromAnnouncements(IReadOnlyCollection<IWebElement> announcements)
+        private void GetVehiclesFromAnnouncements()
         {
-            //announcements = GetAnnouncements();
-            string[] infos = {"przebieg", "rok_produkcji", "pojemnosc"};
+            string[] infos = { "przebieg", "rok_produkcji", "pojemnosc" };
+            IReadOnlyCollection<IWebElement> announcements = GetAnnouncements();
 
             foreach (var announcement in announcements)
             {
@@ -156,12 +137,52 @@ namespace OgloszeniaZadanie
             }
         }
 
-        private static bool IsManyPages()
+        private void GetVehiclesFromAnnouncements(string pages)
+        {
+            string[] infos = { "przebieg", "rok_produkcji", "pojemnosc" };
+            int pagesInt = 0;
+            int actualPage = 1;
+            if (!String.IsNullOrEmpty(pages))
+                pagesInt = int.Parse(pages);
+
+            IReadOnlyCollection<IWebElement> announcements;
+
+            while (true)
+            {
+                announcements = GetAnnouncements();
+                foreach (var announcement in announcements)
+                {
+                    string price = GetInfoFromAnnouncement(announcement);
+                    string mileage = GetInfoFromAnnouncement(announcement, infos[0]);
+                    string productionAge = GetInfoFromAnnouncement(announcement, infos[1]);
+                    string capacity = GetInfoFromAnnouncement(announcement, infos[2]);
+
+                    Vehicle vehicle = new Vehicle(price, mileage, productionAge, capacity);
+                    vehicles.Add(vehicle);
+                }
+                actualPage += 1;
+                if (!String.IsNullOrEmpty(pages))
+                {
+                    if (actualPage > pagesInt)
+                        break;
+                }
+                try
+                {
+                    NextPage();
+                }
+                catch (NoSuchElementException)
+                {
+                    break;
+                }
+            }
+        }
+
+        private bool IsManyPages()
         {
             bool manyPages;
             try
             {
-                driver.FindElements(By.XPath("//*span[@class='pages__item__active')]"));
+                var x = driver.FindElement(By.XPath("//div[@class='navi-bar standard']"));
                 manyPages = true;
             }
             catch (NoSuchElementException)
@@ -173,7 +194,7 @@ namespace OgloszeniaZadanie
 
         private void NextPage()
         {
-            IWebElement nextPageButton = driver.FindElement(By.XPath("//*div[@class='pages__controls pages__controls--right']/a[@class='pages__controls__next']"));
+            IWebElement nextPageButton = driver.FindElement(By.XPath("//a[@title='następna']"));
             nextPageButton.Click();
         }
     }

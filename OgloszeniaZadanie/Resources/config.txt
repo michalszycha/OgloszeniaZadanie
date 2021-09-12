@@ -1,1 +1,1 @@
-[{"SearchPhrase":"Opel Astra","NumberOfPagesRequested":3}]
+[{"SearchPhrase":"Ford Focus","NumberOfPagesRequested":"3"}]

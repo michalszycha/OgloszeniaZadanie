@@ -11,7 +11,7 @@ namespace OgloszeniaZadanie
     {
         public string brand;
         public string model;
-        public int pages;
+        public string pages;
         private string configName = "config.txt";
 
         public DataToSearch()
@@ -37,9 +37,9 @@ namespace OgloszeniaZadanie
             return vehicleFromConfig;
         }
 
-        private int GetPages(string configName)
+        private string GetPages(string configName)
         {
-            int pagesFromConfig;
+            string pagesFromConfig;
             try
             {
                 pagesFromConfig = ReadConfiguration.ReadPages(configName);

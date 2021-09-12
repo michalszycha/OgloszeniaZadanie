@@ -18,7 +18,7 @@ namespace OgloszeniaZadanie
             var vehicle = JsonConvert.DeserializeObject<IList<ConfigInfo>>(jsonData);
             return vehicle.First().SearchPhrase;
         }
-        public static int ReadPages(string configName)
+        public static string ReadPages(string configName)
         {
             string workingDirectory = Environment.CurrentDirectory;
             string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;

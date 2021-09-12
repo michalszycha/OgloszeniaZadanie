@@ -9,6 +9,6 @@ namespace OgloszeniaZadanie
     public class ConfigInfo
     {
         public string SearchPhrase { get; set; }
-        public int NumberOfPagesRequested { get; set; }
+        public string NumberOfPagesRequested { get; set; }
     }
 }

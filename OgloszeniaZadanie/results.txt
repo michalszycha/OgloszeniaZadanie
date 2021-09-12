@@ -1,1 +1,1 @@
-[{"SearchPhrase":"Opel Astra","NumberOfItems":30,"AveragePrice":15266.666666666666,"AverageMileage":206707.2,"AverageEngineCapacity":1666.75,"AverageYearOfProduction":2008.1333333333334}]
+[{"SearchPhrase":"Ford Focus","NumberOfItems":32,"AveragePrice":30851.375,"AverageMileage":169003.8125,"AverageEngineCapacity":1613.1052631578948,"AverageYearOfProduction":2012.84375}]
