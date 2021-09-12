@@ -12,13 +12,17 @@ namespace OgloszeniaZadanie
     {
         public static string ReadVehicle(string configName)
         {
-            var jsonData = File.ReadAllText($"D:\\VisualProjekty\\OgloszeniaZadanie\\OgloszeniaZadanie\\Resources\\{configName}");
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            var jsonData = File.ReadAllText($"{projectDirectory}\\Resources\\{configName}");
             var vehicle = JsonConvert.DeserializeObject<IList<ConfigInfo>>(jsonData);
             return vehicle.First().SearchPhrase;
         }
         public static int ReadPages(string configName)
         {
-            var jsonData = File.ReadAllText($"D:\\VisualProjekty\\OgloszeniaZadanie\\OgloszeniaZadanie\\Resources\\{configName}");
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            var jsonData = File.ReadAllText($"{projectDirectory}\\Resources\\{configName}");
             var pages = JsonConvert.DeserializeObject<IList<ConfigInfo>>(jsonData);
             return pages.First().NumberOfPagesRequested;
         }
