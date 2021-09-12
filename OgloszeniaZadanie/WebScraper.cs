@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,7 +14,9 @@ namespace OgloszeniaZadanie
 {
     class WebScraper
     {
-        static IWebDriver driver = new ChromeDriver(@"D:\VisualProjekty\OgloszeniaZadanie\OgloszeniaZadanie\Resources\");
+        static string workingDirectory = Environment.CurrentDirectory;
+        static string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+        static IWebDriver driver = new ChromeDriver($"{projectDirectory}\\Resources\\");
         DataToSearch dataToSearch;
         WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
 
