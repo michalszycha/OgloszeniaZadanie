@@ -1,1 +1,1 @@
-[{"SearchPhrase":"Ford Focus","NumberOfItems":32,"AveragePrice":30851.375,"AverageMileage":169003.8125,"AverageEngineCapacity":1613.1052631578948,"AverageYearOfProduction":2012.84375}]
+[{"SearchPhrase":"Ford Mondeo","NumberOfItems":41,"AveragePrice":47890.07317073171,"AverageMileage":5669719.804878049,"AverageEngineCapacity":1919.2608695652175,"AverageYearOfProduction":2012.5121951219512}]

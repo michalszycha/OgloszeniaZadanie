@@ -196,6 +196,7 @@ namespace OgloszeniaZadanie
         {
             IWebElement nextPageButton = driver.FindElement(By.XPath("//a[@title='następna']"));
             nextPageButton.Click();
+            wait.Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
         }
     }
 }
